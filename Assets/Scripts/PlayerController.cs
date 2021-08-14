@@ -9,11 +9,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float yaxis;
     [SerializeField]
-    public float moveSpeed = 30f;
+    public float moveSpeed { get; private set; }
     private Vector3 startPosition = new Vector3(-11f, 0f, 0f);
     private Rigidbody2D rb;
     private Animator animationControl;
     private SpriteRenderer characterSprite;
+    public int faceDirection { get; private set; }
+
+    private GameObject hitbox;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,15 +25,19 @@ public class PlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         animationControl = gameObject.GetComponent<Animator>();
         characterSprite = GetComponent<SpriteRenderer>();
+        hitbox = transform.GetChild(0).gameObject;
+        faceDirection = 1;
+        moveSpeed = 10f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Doesn't allow movement or interrupting attacks while attack animation is playing
         if (!animationControl.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             Movement();
-            if (Input.GetKeyDown("space"))
+            if (Input.GetKeyDown("space"))      //Starts attack method when space pressed
             {
                 Attack();
             }
@@ -43,6 +51,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = new Vector3(xaxis, yaxis, 0);
         moveDirection.Normalize();              //Creates a overall movement direction with magnitude 1 for constant speed at diagonals
         rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.deltaTime);
+
         if (moveDirection.magnitude != 0)       //Controls animation for movement
         {
             animationControl.SetBool("Moving", true);
@@ -51,13 +60,18 @@ public class PlayerController : MonoBehaviour
         {
             animationControl.SetBool("Moving", false);
         }
+
         if(xaxis < 0)                           //Flips sprite to face moving direction
         {
             characterSprite.flipX = true;
+            faceDirection = -1;
+            hitbox.transform.localScale = new Vector3(faceDirection, 1, 1);
         }
         else if (xaxis > 0)
         {
             characterSprite.flipX = false;
+            faceDirection = 1;
+            hitbox.transform.localScale = new Vector3(faceDirection, 1, 1);
         }
     }
 

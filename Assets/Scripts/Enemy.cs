@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
-    private float moveSpeed = 20f;
-    private Rigidbody2D enemyRb;
+    [SerializeField]
+    private float moveSpeed = 3f;
+    public bool isDead = false;
+    public int health;
+
     // Start is called before the first frame update
     void Awake()
     {
-        enemyRb = gameObject.GetComponent<Rigidbody2D>();
+
     }
 
     // Update is called once per frame
-    void Update()
+    public void MoveLeft()
     {
-        
+        transform.Translate(-moveSpeed * Time.deltaTime, 0, 0);
     }
 }
