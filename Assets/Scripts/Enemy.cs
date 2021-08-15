@@ -4,20 +4,53 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    //Enemy base class carries variables for health, movespeed, isDead and an attached animator
+    //Carries basic movement and deactivate methods that all enemies will use
     [SerializeField]
-    private float moveSpeed = 3f;
-    public bool isDead = false;
-    public int health;
+    public float moveSpeed = 2f;   //base movement speed of enemies
+    public bool isDead = false;     //if enemy is dead or not. Used as a trigger for death animation
+    public int health;              //how many hits required to kill enemy
+    public Animator animator;       //attached animator component. communicates
+    public int score = 0;
+    public SpriteRenderer sprite;
+    protected GameController gameController;
 
     // Start is called before the first frame update
-    void Awake()
+    protected virtual void Start()
     {
-
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        gameController = FindObjectOfType<GameController>();
     }
 
-    // Update is called once per frame
+    protected virtual void Awake()
+    {
+        isDead = false;
+        health = Mathf.FloorToInt(score / 10) + 1;
+    }
+
+    // Moves enemy left proportional to movespeed variable
     public void MoveLeft()
     {
         transform.Translate(-moveSpeed * Time.deltaTime, 0, 0);
+    }
+
+    //Deactivates the object
+    public void Deactivate()
+    {
+        animator.SetBool("Die", false);
+        StartCoroutine(FadeOut());
+    }
+
+    IEnumerator FadeOut()
+    {
+        Color tmp = sprite.color;
+        while(sprite.color.a > .4)
+        {
+            tmp.a -= .2f;
+            sprite.color = tmp;
+            yield return new WaitForSeconds(.1f);
+        }
+        gameObject.SetActive(false);
     }
 }
