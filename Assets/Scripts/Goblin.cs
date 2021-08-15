@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bat : Enemy
+public class Goblin : Enemy
 {
-    public int playerLives;
+    private int playerLives;
+
+    protected override void Start()
+    {
+        base.Start();
+        moveSpeed = 3f;
+    }
 
     // Update is called once per frame
     void Update()
@@ -23,10 +29,8 @@ public class Bat : Enemy
                 animator.SetBool("Die", true);
             }
         }
-        
     }
 
-    //Manages getting hit by the player attack
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("PlayerAttack"))
