@@ -7,18 +7,20 @@ public abstract class Enemy : MonoBehaviour
     //Enemy base class carries variables for health, movespeed, isDead and an attached animator
     //Carries basic movement and deactivate methods that all enemies will use
     [SerializeField]
-    public float moveSpeed { get; private set; } = 2f;   //base movement speed of enemies
+    public float moveSpeed = 2f;   //base movement speed of enemies
     public bool isDead = false;     //if enemy is dead or not. Used as a trigger for death animation
     public int health;              //how many hits required to kill enemy
     public Animator animator;       //attached animator component. communicates
     public int score = 0;
     public SpriteRenderer sprite;
+    protected GameController gameController;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        gameController = FindObjectOfType<GameController>();
     }
 
     protected virtual void Awake()
@@ -51,7 +53,4 @@ public abstract class Enemy : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
-
-    public abstract void Penis()
-
 }

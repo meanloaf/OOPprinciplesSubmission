@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Bat : Enemy
 {
-    public int playerLives;
-
     // Update is called once per frame
     void Update()
     {
@@ -14,11 +12,13 @@ public class Bat : Enemy
             MoveLeft();
             if (transform.position.x < -16)
             {
-                --playerLives;
+                isDead = true;
+                gameController.ChangeLives(2);
                 Deactivate();
             }
             if (health <= 0)
             {
+                gameController.ChangeScore(1);
                 isDead = true;
                 animator.SetBool("Die", true);
             }

@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public int score;
+    public int playerLives;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        score = 0;
+        playerLives = 10;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeScore(int value)
     {
-        
+        score += value;
+    }
+
+    public void ChangeLives(int value)
+    {
+        playerLives -= value;
+    }
+
+    void SpawnEnemies()
+    {
+
     }
 }

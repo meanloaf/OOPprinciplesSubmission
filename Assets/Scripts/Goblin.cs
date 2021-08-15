@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Goblin : Enemy
 {
-    private int playerLives;
-
     protected override void Start()
     {
         base.Start();
-        moveSpeed = 3f;
+        moveSpeed = 3f;     //Goblin unit starts faster than other enemies
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        moveSpeed = Mathf.FloorToInt(score / 10) / 2 + 3;   //Speed increases with score
     }
 
     // Update is called once per frame
@@ -20,11 +24,13 @@ public class Goblin : Enemy
             MoveLeft();
             if (transform.position.x < -16)
             {
-                --playerLives;
+                isDead = true;
+                gameController.ChangeLives(1);
                 Deactivate();
             }
             if (health <= 0)
             {
+                gameController.ChangeScore(2);
                 isDead = true;
                 animator.SetBool("Die", true);
             }
