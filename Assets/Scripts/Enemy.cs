@@ -21,12 +21,13 @@ public abstract class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         gameController = FindObjectOfType<GameController>();
+        health = Mathf.FloorToInt(score / 10) + 1;
     }
 
     protected virtual void Awake()
     {
         isDead = false;
-        health = Mathf.FloorToInt(score / 10) + 1;
+        //health = Mathf.FloorToInt(score / 10) + 1;
     }
 
     // Moves enemy left proportional to movespeed variable
@@ -51,6 +52,6 @@ public abstract class Enemy : MonoBehaviour
             sprite.color = tmp;
             yield return new WaitForSeconds(.1f);
         }
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

@@ -8,12 +8,13 @@ public class Mushroom : Enemy
     {
         base.Start();
         moveSpeed = 1.5f;                           //Mushroom unit is slower to balance health increase
+        health = Mathf.FloorToInt(score / 5) + 2;
     }
 
     protected override void Awake()
     {
         isDead = false;
-        health = Mathf.FloorToInt(score / 5) + 2;   //Mushroom health is higher than other enemies and scales faster
+        //health = Mathf.FloorToInt(score / 5) + 2;   //Mushroom health is higher than other enemies and scales faster
     }
 
     //Looking at them, update method for all enemies could be mostly moved to base class. Keeping it here
