@@ -11,7 +11,7 @@ public abstract class Enemy : MonoBehaviour
     public bool isDead = false;     //if enemy is dead or not. Used as a trigger for death animation
     public int health;              //how many hits required to kill enemy
     public Animator animator;       //attached animator component. communicates
-    public int score = 0;
+    public int score;
     public SpriteRenderer sprite;
     protected GameController gameController;
 
@@ -20,8 +20,9 @@ public abstract class Enemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        gameController = FindObjectOfType<GameController>();
-        health = Mathf.FloorToInt(score / 10) + 1;
+        gameController = GameController.Instance;
+        score = gameController.score;
+        health = Mathf.FloorToInt(score / 20) + 1;
     }
 
     protected virtual void Awake()
@@ -53,5 +54,13 @@ public abstract class Enemy : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
         Destroy(gameObject);
+    }
+
+    private void Update()
+    {
+        if (gameController.gameOver)
+        {
+            isDead = true;
+        }
     }
 }

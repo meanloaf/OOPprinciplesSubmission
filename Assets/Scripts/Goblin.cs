@@ -8,12 +8,17 @@ public class Goblin : Enemy
     {
         base.Start();
         moveSpeed = 3f;     //Goblin unit starts faster than other enemies
+        if (health > 2)
+        {
+            health = 2;     //Goblin health capped at 2
+        }
+        moveSpeed = Mathf.FloorToInt(score / 10) / 2 + 3;   //Speed increases with score
     }
 
     protected override void Awake()
     {
         base.Awake();
-        moveSpeed = Mathf.FloorToInt(score / 10) / 2 + 3;   //Speed increases with score
+
     }
 
     // Update is called once per frame
@@ -35,6 +40,12 @@ public class Goblin : Enemy
                 animator.SetBool("Die", true);
             }
         }
+        if (gameController.gameOver)
+        {
+            isDead = true;
+            animator.SetBool("Die", true);
+            animator.SetTrigger("hit");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,6 +54,14 @@ public class Goblin : Enemy
         {
             --health;
             animator.SetTrigger("hit");
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("GameOver"))
+        {
+            health = 0;
         }
     }
 }

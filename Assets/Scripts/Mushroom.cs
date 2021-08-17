@@ -8,7 +8,7 @@ public class Mushroom : Enemy
     {
         base.Start();
         moveSpeed = 1.5f;                           //Mushroom unit is slower to balance health increase
-        health = Mathf.FloorToInt(score / 5) + 2;
+        health = Mathf.FloorToInt(score / 10) + 2;
     }
 
     protected override void Awake()
@@ -37,6 +37,12 @@ public class Mushroom : Enemy
                 animator.SetBool("Die", true);
             }
         }
+        if (gameController.gameOver)
+        {
+            isDead = true;
+            animator.SetBool("Die", true);
+            animator.SetTrigger("hit");
+        }
     }
 
     //Handles collision with player attack
@@ -46,6 +52,10 @@ public class Mushroom : Enemy
         {
             --health;
             animator.SetTrigger("hit");
+        }
+        else if (collision.gameObject.CompareTag("GameOver"))
+        {
+            health = 0;
         }
     }
 }

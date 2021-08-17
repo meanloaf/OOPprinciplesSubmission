@@ -161,6 +161,8 @@ MonoBehaviour:
   - {fileID: 2544557830500279273, guid: 96e9a52e62f62be4f91e6675411b9832, type: 3}
   - {fileID: 8807840290664740857, guid: 77a3fa7b223288f4492862775a741774, type: 3}
   - {fileID: 6568612121152357409, guid: 3d4c82999e9a49c40a9c8710931e956f, type: 3}
+  GobProb: 0.3
+  MushProb: 0.1
   gameOverContainer: {fileID: 688260935}
 --- !u!4 &77612753
 Transform:

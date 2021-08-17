@@ -13,11 +13,19 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI livesText;
     public bool gameOver;
     public GameObject[] enemies = new GameObject[3];
+    public float GobProb = 0.3f;
+    public float MushProb = 0.1f;
     public GameObject gameOverContainer;
 
+    public static GameController Instance;
     // Start is called before the first frame update
     void Start()
     {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        Instance = this;
         score = 0;
         playerLives = 10;
         gameOver = false;
@@ -40,7 +48,11 @@ public class GameController : MonoBehaviour
 
     public void Update()
     {
-        if (playerLives <= 0)
+        if (playerLives < 0)
+        {
+            playerLives = 0;
+        }
+        if (playerLives == 0)
         {
             gameOver = true;
             SetGameOver();
@@ -54,16 +66,25 @@ public class GameController : MonoBehaviour
         {
             pool = 2;
         }
-        int toSpawn = Mathf.FloorToInt(score/20) + 1;
-        if (toSpawn > 5)
+        int toSpawn = Mathf.FloorToInt(score/30) + 1;
+        if (toSpawn > 3)
         {
-            toSpawn = 5;
+            toSpawn = 3;
         }
         for (int i = 0; i < toSpawn; i++)
         {
             float ypos = Random.Range(-5f, 6.25f);
             Vector3 spawnPos = new Vector3(14f, ypos, 0f);
-            int spawnIndex = Random.Range(0, pool+1);
+            float index = Random.Range(0, 1f);
+            int spawnIndex = 0;
+            if (pool >= 2 && index < MushProb)
+            {
+                spawnIndex = 2;
+            }
+            else if (pool >= 1 && index < GobProb)
+            {
+                spawnIndex = 1;
+            }
             Instantiate(enemies[spawnIndex], spawnPos, enemies[spawnIndex].transform.rotation);
         }
     }
