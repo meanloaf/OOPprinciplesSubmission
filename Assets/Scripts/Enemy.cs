@@ -14,10 +14,12 @@ public abstract class Enemy : MonoBehaviour
     public int score;
     public SpriteRenderer sprite;
     protected GameController gameController;
+    protected AudioSource hitSound;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        hitSound = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         gameController = GameController.Instance;

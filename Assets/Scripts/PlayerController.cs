@@ -14,27 +14,31 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animationControl;
     private SpriteRenderer characterSprite;
+    private AudioSource attackSound;
     public int faceDirection { get; private set; }
+    public GameController gameController;
 
     private GameObject hitbox;
 
     // Start is called before the first frame update
     void Start()
     {
+        attackSound = GetComponent<AudioSource>();
         transform.position = startPosition;
         rb = gameObject.GetComponent<Rigidbody2D>();
         animationControl = gameObject.GetComponent<Animator>();
         characterSprite = GetComponent<SpriteRenderer>();
         hitbox = transform.GetChild(0).gameObject;
         faceDirection = 1;
-        moveSpeed = 10f;
+        moveSpeed = 20f;
+        gameController = GameController.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
         //Doesn't allow movement or interrupting attacks while attack animation is playing
-        if (!animationControl.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        if (!animationControl.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !gameController.gameOver)
         {
             Movement();
             if (Input.GetKeyDown("space"))      //Starts attack method when space pressed
@@ -77,6 +81,7 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
+        attackSound.Play();
         animationControl.SetTrigger("Attack");  //Triggers attack animation.
     }
 }

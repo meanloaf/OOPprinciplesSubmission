@@ -4,21 +4,24 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public TMP_InputField inputField;
+    [SerializeField] private TMP_InputField inputField;
     public static MainMenuManager Instance;
-    public TextMeshProUGUI errorText;
-    public TextMeshProUGUI nameTooLong;
-    private string playerName;
+    [SerializeField] private TextMeshProUGUI errorText;
+    [SerializeField] private TextMeshProUGUI nameTooLong;
+    public string playerName { get; private set; }
+    private InfoCarrier infoCarrier;
     private void Start()
     {
-        if (Instance != null)
+        if (Instance != null)       //Ensures only one version of menu manager loaded
         {
             Destroy(gameObject);
         }
         Instance = this;
+        infoCarrier = InfoCarrier.Instance;
     }
     public void ExitGame()
     {
@@ -49,6 +52,17 @@ public class MainMenuManager : MonoBehaviour
 
     public void UpdateName()
     {
+        infoCarrier = InfoCarrier.Instance;
         playerName = inputField.text;
+        infoCarrier.playerName = playerName;
+    }
+
+    public void DeleteHighscores()
+    {
+        string path = Application.persistentDataPath + "/save.json";
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
     }
 }

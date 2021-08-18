@@ -54,6 +54,7 @@ public class Goblin : Enemy
         {
             --health;
             animator.SetTrigger("hit");
+            hitSound.Play();
         }
     }
 

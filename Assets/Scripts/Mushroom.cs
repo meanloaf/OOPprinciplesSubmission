@@ -52,6 +52,7 @@ public class Mushroom : Enemy
         {
             --health;
             animator.SetTrigger("hit");
+            hitSound.Play();
         }
         else if (collision.gameObject.CompareTag("GameOver"))
         {

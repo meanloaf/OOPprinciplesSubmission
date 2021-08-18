@@ -45,6 +45,7 @@ public class Bat : Enemy
         {
             --health;
             animator.SetTrigger("hit");
+            hitSound.Play();
         }
         else if (collision.gameObject.CompareTag("GameOver"))
         {
